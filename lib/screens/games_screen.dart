@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../theme/app_theme.dart';
 
@@ -15,6 +16,7 @@ class GamesScreen extends StatelessWidget {
         levelColor: AppTheme.green,
         icon: Icons.grid_view_rounded,
         color: AppTheme.primary,
+        route: '/memory-match',
       ),
       _GameData(
         title: 'Word Builder',
@@ -23,6 +25,7 @@ class GamesScreen extends StatelessWidget {
         levelColor: AppTheme.green,
         icon: Icons.abc_rounded,
         color: AppTheme.purple,
+        route: '',
       ),
       _GameData(
         title: 'Picture Recognition',
@@ -31,6 +34,7 @@ class GamesScreen extends StatelessWidget {
         levelColor: AppTheme.teal,
         icon: Icons.image_outlined,
         color: AppTheme.amber,
+        route: '',
       ),
       _GameData(
         title: 'Number Sequence',
@@ -39,6 +43,7 @@ class GamesScreen extends StatelessWidget {
         levelColor: AppTheme.orange,
         icon: Icons.looks_one_outlined,
         color: AppTheme.pink,
+        route: '',
       ),
     ];
 
@@ -50,7 +55,6 @@ class GamesScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Header
               Row(
                 children: [
                   Container(
@@ -88,11 +92,24 @@ class GamesScreen extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 24),
-
-              // Game cards
               ...games.map((g) => Padding(
                     padding: const EdgeInsets.only(bottom: 14),
-                    child: _GameCard(data: g),
+                    child: _GameCard(
+                      data: g,
+                      onTap: () {
+                        if (g.route.isNotEmpty) {
+                          context.push(g.route);
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('${g.title} — Coming soon'),
+                              duration: const Duration(seconds: 2),
+                              behavior: SnackBarBehavior.floating,
+                            ),
+                          );
+                        }
+                      },
+                    ),
                   )),
             ],
           ),
@@ -109,6 +126,7 @@ class _GameData {
   final Color levelColor;
   final IconData icon;
   final Color color;
+  final String route;
 
   _GameData({
     required this.title,
@@ -117,12 +135,15 @@ class _GameData {
     required this.levelColor,
     required this.icon,
     required this.color,
+    required this.route,
   });
 }
 
 class _GameCard extends StatelessWidget {
   final _GameData data;
-  const _GameCard({required this.data});
+  final VoidCallback onTap;
+
+  const _GameCard({required this.data, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -131,9 +152,7 @@ class _GameCard extends StatelessWidget {
       borderRadius: BorderRadius.circular(18),
       child: InkWell(
         borderRadius: BorderRadius.circular(18),
-        onTap: () {
-          // TODO: Phase 2 — navigate to actual game
-        },
+        onTap: onTap,
         child: Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
@@ -148,7 +167,6 @@ class _GameCard extends StatelessWidget {
           ),
           child: Row(
             children: [
-              // Icon
               Container(
                 padding: const EdgeInsets.all(14),
                 decoration: BoxDecoration(
@@ -158,8 +176,6 @@ class _GameCard extends StatelessWidget {
                 child: Icon(data.icon, color: data.color, size: 30),
               ),
               const SizedBox(width: 16),
-
-              // Title + subtitle
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -183,8 +199,6 @@ class _GameCard extends StatelessWidget {
                   ],
                 ),
               ),
-
-              // Difficulty badge
               Container(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 6),

@@ -25,7 +25,7 @@ class GamesScreen extends StatelessWidget {
         levelColor: AppTheme.green,
         icon: Icons.abc_rounded,
         color: AppTheme.purple,
-        route: '',
+        route: '/word-builder',
       ),
       _GameData(
         title: 'Picture Recognition',
@@ -34,7 +34,7 @@ class GamesScreen extends StatelessWidget {
         levelColor: AppTheme.teal,
         icon: Icons.image_outlined,
         color: AppTheme.amber,
-        route: '',
+        route: '/picture-recognition',
       ),
       _GameData(
         title: 'Number Sequence',
@@ -43,7 +43,7 @@ class GamesScreen extends StatelessWidget {
         levelColor: AppTheme.orange,
         icon: Icons.looks_one_outlined,
         color: AppTheme.pink,
-        route: '',
+        route: '/number-sequence',
       ),
     ];
 

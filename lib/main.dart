@@ -10,6 +10,9 @@ import 'screens/memories_screen.dart';
 import 'screens/wellness_screen.dart';
 import 'screens/settings_screen.dart';
 import 'screens/games/memory_match_screen.dart';
+import 'screens/games/word_builder_screen.dart';
+import 'screens/games/picture_recognition_screen.dart';
+import 'screens/games/number_sequence_screen.dart';
 
 void main() {
   runApp(const ElderCareApp());
@@ -37,6 +40,18 @@ final _router = GoRouter(
     GoRoute(
       path: '/memory-match',
       builder: (context, state) => const MemoryMatchScreen(),
+    ),
+    GoRoute(
+      path: '/word-builder',
+      builder: (context, state) => const WordBuilderScreen(),
+    ),
+    GoRoute(
+      path: '/picture-recognition',
+      builder: (context, state) => const PictureRecognitionScreen(),
+    ),
+    GoRoute(
+      path: '/number-sequence',
+      builder: (context, state) => const NumberSequenceScreen(),
     ),
   ],
 );

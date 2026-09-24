@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../theme/app_theme.dart';
+import '../l10n/app_localizations.dart';
 
 class TasksScreen extends StatefulWidget {
   const TasksScreen({super.key});
@@ -47,6 +48,7 @@ class _TasksScreenState extends State<TasksScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final progress = _completed / _tasks.length;
 
     return Scaffold(
@@ -57,7 +59,6 @@ class _TasksScreenState extends State<TasksScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Header
               Row(
                 children: [
                   Container(
@@ -75,7 +76,7 @@ class _TasksScreenState extends State<TasksScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'My Daily Tasks',
+                          l10n.tasksTitle,
                           style: GoogleFonts.nunito(
                             fontSize: 24,
                             fontWeight: FontWeight.w800,
@@ -83,7 +84,7 @@ class _TasksScreenState extends State<TasksScreen> {
                           ),
                         ),
                         Text(
-                          'Keep on track, one step at a time',
+                          l10n.keepOnTrack,
                           style: GoogleFonts.nunito(
                             fontSize: 14,
                             color: AppTheme.textSecondary,
@@ -95,8 +96,6 @@ class _TasksScreenState extends State<TasksScreen> {
                 ],
               ),
               const SizedBox(height: 20),
-
-              // Progress card
               Container(
                 padding: const EdgeInsets.all(18),
                 decoration: BoxDecoration(
@@ -117,7 +116,7 @@ class _TasksScreenState extends State<TasksScreen> {
                       children: [
                         Expanded(
                           child: Text(
-                            'Today\'s Progress',
+                            l10n.todaysProgress,
                             style: GoogleFonts.nunito(
                               fontSize: 16,
                               fontWeight: FontWeight.w700,
@@ -150,9 +149,8 @@ class _TasksScreenState extends State<TasksScreen> {
                 ),
               ),
               const SizedBox(height: 20),
-
               Text(
-                'Today\'s Tasks',
+                l10n.todaysTasks,
                 style: GoogleFonts.nunito(
                   fontSize: 18,
                   fontWeight: FontWeight.w700,
@@ -160,8 +158,6 @@ class _TasksScreenState extends State<TasksScreen> {
                 ),
               ),
               const SizedBox(height: 12),
-
-              // Task list
               ...List.generate(_tasks.length, (i) {
                 final task = _tasks[i];
                 return Padding(
@@ -224,7 +220,6 @@ class _TaskTile extends StatelessWidget {
           ),
           child: Row(
             children: [
-              // Checkbox
               Container(
                 width: 28,
                 height: 28,
@@ -232,8 +227,7 @@ class _TaskTile extends StatelessWidget {
                   color: done ? AppTheme.green : Colors.white,
                   borderRadius: BorderRadius.circular(8),
                   border: Border.all(
-                    color:
-                        done ? AppTheme.green : const Color(0xFFB0BEC5),
+                    color: done ? AppTheme.green : const Color(0xFFB0BEC5),
                     width: 2,
                   ),
                 ),
@@ -242,8 +236,6 @@ class _TaskTile extends StatelessWidget {
                     : null,
               ),
               const SizedBox(width: 14),
-
-              // Icon
               Container(
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
@@ -253,8 +245,6 @@ class _TaskTile extends StatelessWidget {
                 child: Icon(icon, color: AppTheme.primary, size: 22),
               ),
               const SizedBox(width: 12),
-
-              // Title + time
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -280,8 +270,6 @@ class _TaskTile extends StatelessWidget {
                   ],
                 ),
               ),
-
-              // Status
               Icon(
                 done ? Icons.check_circle : Icons.circle_outlined,
                 color: done ? AppTheme.green : const Color(0xFFB0BEC5),

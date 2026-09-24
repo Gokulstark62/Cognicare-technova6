@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../theme/app_theme.dart';
+import '../../l10n/app_localizations.dart';
 import 'difficulty_store.dart';
 
 class NumberSequenceScreen extends StatefulWidget {
@@ -26,7 +27,6 @@ class _NumberSequenceScreenState extends State<NumberSequenceScreen> {
   Timer? _hideTimer;
   bool _winShown = false;
 
-  // Stats
   int _round = 0;
   int _correctCount = 0;
   static const int _totalRounds = 5;
@@ -110,29 +110,31 @@ class _NumberSequenceScreenState extends State<NumberSequenceScreen> {
     return true;
   }
 
-  void _onGameComplete() {
+  Future<void> _onGameComplete() async {
     if (_winShown) return;
     _winShown = true;
 
     final lastCorrect = _correctCount > 0;
-    final change = _store.adjustNumberSeq(correct: lastCorrect);
+    final change = await _store.adjustNumberSeq(correct: lastCorrect);
 
+    if (!mounted) return;
     _showWinDialog(change);
   }
 
   void _showWinDialog(String change) {
     if (!mounted) return;
+    final l10n = AppLocalizations.of(context);
 
     String? changeMessage;
     Color changeColor = AppTheme.primary;
     IconData? changeIcon;
 
     if (change == 'up') {
-      changeMessage = 'Great job! Level up!';
+      changeMessage = l10n.greatJobLevelUp;
       changeColor = AppTheme.green;
       changeIcon = Icons.arrow_upward;
     } else if (change == 'down') {
-      changeMessage = "Let's try an easier level";
+      changeMessage = l10n.letsTryEasier;
       changeColor = AppTheme.amber;
       changeIcon = Icons.arrow_downward;
     }
@@ -161,7 +163,7 @@ class _NumberSequenceScreenState extends State<NumberSequenceScreen> {
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  'Session Complete!',
+                  l10n.sessionComplete,
                   style: GoogleFonts.nunito(
                     fontSize: 26,
                     fontWeight: FontWeight.w800,
@@ -170,7 +172,7 @@ class _NumberSequenceScreenState extends State<NumberSequenceScreen> {
                 ),
                 const SizedBox(height: 6),
                 Text(
-                  'You got $_correctCount out of $_totalRounds',
+                  l10n.youGotOutOf(_correctCount, _totalRounds),
                   style: GoogleFonts.nunito(
                     fontSize: 15,
                     color: AppTheme.textSecondary,
@@ -206,19 +208,19 @@ class _NumberSequenceScreenState extends State<NumberSequenceScreen> {
                 Row(
                   children: [
                     _WinStat(
-                      label: 'Correct',
+                      label: l10n.correct,
                       value: '$_correctCount',
                       icon: Icons.check_circle_outline,
                       color: AppTheme.green,
                     ),
                     _WinStat(
-                      label: 'Wrong',
+                      label: l10n.wrong,
                       value: '${_totalRounds - _correctCount}',
                       icon: Icons.cancel_outlined,
                       color: AppTheme.pink,
                     ),
                     _WinStat(
-                      label: 'Level',
+                      label: l10n.level,
                       value: _store.numberSeqLevelName,
                       icon: Icons.star_outline,
                       color: AppTheme.amber,
@@ -234,7 +236,7 @@ class _NumberSequenceScreenState extends State<NumberSequenceScreen> {
                       _restartSession();
                     },
                     icon: const Icon(Icons.refresh),
-                    label: const Text('Play Again'),
+                    label: Text(l10n.playAgain),
                   ),
                 ),
                 const SizedBox(height: 10),
@@ -246,7 +248,7 @@ class _NumberSequenceScreenState extends State<NumberSequenceScreen> {
                       context.go('/home');
                     },
                     icon: const Icon(Icons.home_outlined),
-                    label: const Text('Back to Home'),
+                    label: Text(l10n.backToHome),
                     style: OutlinedButton.styleFrom(
                       minimumSize: const Size(double.infinity, 58),
                       side: const BorderSide(color: Color(0xFFCFD8DC)),
@@ -274,6 +276,7 @@ class _NumberSequenceScreenState extends State<NumberSequenceScreen> {
   }
 
   void _showLevelPicker() {
+    final l10n = AppLocalizations.of(context);
     showModalBottomSheet(
       context: context,
       shape: const RoundedRectangleBorder(
@@ -288,7 +291,7 @@ class _NumberSequenceScreenState extends State<NumberSequenceScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Choose Difficulty',
+                  l10n.chooseDifficulty,
                   style: GoogleFonts.nunito(
                     fontSize: 22,
                     fontWeight: FontWeight.w800,
@@ -296,12 +299,12 @@ class _NumberSequenceScreenState extends State<NumberSequenceScreen> {
                   ),
                 ),
                 const SizedBox(height: 16),
-                _levelOption(sheetContext, 0, 'Easy', '3 digits',
-                    AppTheme.green),
-                _levelOption(
-                    sheetContext, 1, 'Medium', '4 digits', AppTheme.amber),
-                _levelOption(
-                    sheetContext, 2, 'Hard', '5 digits', AppTheme.pink),
+                _levelOption(sheetContext, 0, l10n.easy,
+                    '3 digits', AppTheme.green),
+                _levelOption(sheetContext, 1, l10n.medium,
+                    '4 digits', AppTheme.amber),
+                _levelOption(sheetContext, 2, l10n.hard,
+                    '5 digits', AppTheme.pink),
               ],
             ),
           ),
@@ -325,8 +328,9 @@ class _NumberSequenceScreenState extends State<NumberSequenceScreen> {
         borderRadius: BorderRadius.circular(14),
         child: InkWell(
           borderRadius: BorderRadius.circular(14),
-          onTap: () {
-            _store.setNumberSeqLevel(level);
+          onTap: () async {
+            await _store.setNumberSeqLevel(level);
+            if (!sheetContext.mounted) return;
             Navigator.of(sheetContext).pop();
             _restartSession();
           },
@@ -381,6 +385,8 @@ class _NumberSequenceScreenState extends State<NumberSequenceScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+
     if (_round >= _totalRounds) {
       return const Scaffold(
         body: Center(child: CircularProgressIndicator()),
@@ -394,7 +400,7 @@ class _NumberSequenceScreenState extends State<NumberSequenceScreen> {
           icon: const Icon(Icons.arrow_back),
           onPressed: () => context.go('/home'),
         ),
-        title: const Text('Number Sequence'),
+        title: Text(l10n.numberSequence),
         actions: [
           Center(
             child: GestureDetector(
@@ -437,7 +443,7 @@ class _NumberSequenceScreenState extends State<NumberSequenceScreen> {
                 children: [
                   Expanded(
                     child: Text(
-                      'Round ${_round + 1} / $_totalRounds',
+                      '${l10n.round} ${_round + 1} / $_totalRounds',
                       style: GoogleFonts.nunito(
                         fontSize: 16,
                         fontWeight: FontWeight.w700,
@@ -483,8 +489,6 @@ class _NumberSequenceScreenState extends State<NumberSequenceScreen> {
                 ),
               ),
               const SizedBox(height: 24),
-
-              // Instruction / sequence display
               Container(
                 width: double.infinity,
                 padding: const EdgeInsets.all(24),
@@ -587,8 +591,6 @@ class _NumberSequenceScreenState extends State<NumberSequenceScreen> {
                 ),
               ),
               const SizedBox(height: 24),
-
-              // Number pad
               Expanded(
                 child: Center(
                   child: ConstrainedBox(
@@ -666,7 +668,9 @@ class _NumberKey extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
             border: Border.all(
-              color: enabled ? color.withOpacity(0.4) : const Color(0xFFCFD8DC),
+              color: enabled
+                  ? color.withOpacity(0.4)
+                  : const Color(0xFFCFD8DC),
               width: 2,
             ),
             boxShadow: enabled

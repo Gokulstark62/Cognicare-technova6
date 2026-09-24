@@ -2,19 +2,46 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../theme/app_theme.dart';
+import '../l10n/app_localizations.dart';
 
 class MemoriesScreen extends StatelessWidget {
   const MemoriesScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+
     final memories = [
-      {'title': 'Diwali 2024', 'date': 'Nov 2024', 'icon': Icons.celebration_outlined},
-      {'title': 'Family Trip', 'date': 'Aug 2024', 'icon': Icons.landscape_outlined},
-      {'title': 'Birthday Party', 'date': 'Jun 2024', 'icon': Icons.cake_outlined},
-      {'title': 'Anniversary', 'date': 'Mar 2024', 'icon': Icons.favorite_outline},
-      {'title': 'Pongal Festival', 'date': 'Jan 2024', 'icon': Icons.wb_sunny_outlined},
-      {'title': 'Beach Vacation', 'date': 'Dec 2023', 'icon': Icons.beach_access_outlined},
+      {
+        'title': 'Diwali 2024',
+        'date': 'Nov 2024',
+        'icon': Icons.celebration_outlined
+      },
+      {
+        'title': 'Family Trip',
+        'date': 'Aug 2024',
+        'icon': Icons.landscape_outlined
+      },
+      {
+        'title': 'Birthday Party',
+        'date': 'Jun 2024',
+        'icon': Icons.cake_outlined
+      },
+      {
+        'title': 'Anniversary',
+        'date': 'Mar 2024',
+        'icon': Icons.favorite_outline
+      },
+      {
+        'title': 'Pongal Festival',
+        'date': 'Jan 2024',
+        'icon': Icons.wb_sunny_outlined
+      },
+      {
+        'title': 'Beach Vacation',
+        'date': 'Dec 2023',
+        'icon': Icons.beach_access_outlined
+      },
     ];
 
     return Scaffold(
@@ -24,7 +51,7 @@ class MemoriesScreen extends StatelessWidget {
           icon: const Icon(Icons.arrow_back),
           onPressed: () => context.go('/home'),
         ),
-        title: const Text('My Family Memories'),
+        title: Text(l10n.memoriesTitle),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
@@ -44,7 +71,7 @@ class MemoriesScreen extends StatelessWidget {
                   const SizedBox(width: 12),
                   Expanded(
                     child: Text(
-                      'Cherish your favourite moments',
+                      l10n.cherishMoments,
                       style: GoogleFonts.nunito(
                         fontSize: 15,
                         fontWeight: FontWeight.w700,
@@ -60,7 +87,8 @@ class MemoriesScreen extends StatelessWidget {
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               itemCount: memories.length,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              gridDelegate:
+                  const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
                 crossAxisSpacing: 14,
                 mainAxisSpacing: 14,

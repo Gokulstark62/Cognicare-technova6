@@ -1,0 +1,295 @@
+{
+  "@@locale": "en",
+
+  "appName": "CogniCare",
+  "tagline": "Brighter Days • Stronger Connections",
+  "taglineLong": "Better Minds • Happier Families • Together Always",
+
+  "getStarted": "Get Started",
+  "continueWithGoogle": "Continue with Google",
+  "continueText": "Continue",
+
+  "login": "Login",
+  "signUp": "Sign Up",
+  "logout": "Logout",
+  "logOut": "Logout",
+  "forgotPassword": "Forgot Password?",
+  "or": "or",
+  "dontHaveAccount": "Don't have an account?",
+  "alreadyHaveAccount": "Already have an account?",
+  "mobileOrEmail": "Mobile Number / Email",
+  "password": "Password",
+  "fullName": "Full Name",
+  "mobileNumber": "Mobile Number",
+  "emailOptional": "Email (Optional)",
+  "familyCaregiver": "Family / Caregiver",
+  "doctor": "Doctor",
+  "createAccount": "Create Account",
+
+  "chooseYourLanguage": "Choose Your Language",
+  "selectPreferredLanguage": "Select your preferred language to continue",
+
+  "homeTitle": "Home",
+  "gamesTitle": "Brain Games",
+  "tasksTitle": "My Daily Tasks",
+  "familyTitle": "My Family",
+  "settingsTitle": "Settings",
+  "memoriesTitle": "My Family Memories",
+  "wellnessTitle": "Wellness & Relax",
+
+  "goodMorning": "Good Morning",
+  "goodAfternoon": "Good Afternoon",
+  "goodEvening": "Good Evening",
+  "goodNight": "Good Night",
+  "haveWonderfulDay": "Have a wonderful day!",
+
+  "todaysProgress": "Today's Progress",
+  "medicines": "Medicines",
+  "hydration": "Hydration",
+  "nextAppointment": "Next Appointment",
+  "noneScheduled": "None scheduled",
+  "noMedicines": "No medicines",
+  "glasses": "glasses",
+  "taken": "taken",
+
+  "quickActions": "Quick Actions",
+  "todaysSchedule": "Today's Schedule",
+  "nothingScheduled": "Nothing scheduled yet",
+  "seeAll": "See All",
+
+  "logWater": "Log Water",
+  "myMedicines": "My Medicines",
+  "myRoutine": "My Daily Routine",
+  "playGames": "Play Games",
+
+  "findMatchingPairs": "Find Matching Pairs",
+  "tapCardToFlip": "Tap a card to flip it",
+  "buildTheWord": "Build the Word",
+  "arrangeLetters": "Arrange letters to form words",
+  "identifyObjects": "Identify objects and places",
+  "rememberSequence": "Remember the sequence",
+  "memoryMatch": "Memory Match",
+  "wordBuilder": "Word Builder",
+  "pictureRecognition": "Picture Recognition",
+  "numberSequence": "Number Sequence",
+  "easy": "Easy",
+  "medium": "Medium",
+  "hard": "Hard",
+  "veryEasy": "Very Easy",
+  "exerciseYourMind": "Exercise your mind. Have fun and keep your brain active!",
+  "findMatchingPairsSub": "Find matching pairs",
+  "arrangeLettersSub": "Arrange letters to form words",
+  "identifyObjectsSub": "Identify objects and places",
+  "rememberSequenceSub": "Remember the sequence",
+
+  "todaysTasks": "Today's Tasks",
+  "keepOnTrack": "Keep on track, one step at a time",
+  "stayConnected": "Stay connected with your loved ones",
+  "online": "Online",
+  "lastSeen": "Last seen recently",
+
+  "youAreDoingGreat": "You are doing great!",
+  "keepSmallSteps": "Keep taking small steps.",
+
+  "moves": "Moves",
+  "time": "Time",
+  "pairs": "Pairs",
+  "accuracy": "Accuracy",
+  "attempts": "Attempts",
+  "level": "Level",
+  "correct": "Correct",
+  "wrong": "Wrong",
+  "score": "Score",
+  "round": "Round",
+
+  "playAgain": "Play Again",
+  "backToHome": "Back to Home",
+  "nextWord": "Next Word",
+  "clear": "Clear",
+  "chooseDifficulty": "Choose Difficulty",
+  "chooseAnIcon": "Choose an Icon",
+  "nextGame": "Next game",
+  "greatJobLevelUp": "Great job! Level up!",
+  "letsTryEasier": "Let's try an easier level",
+  "congratulations": "Congratulations!",
+  "sessionComplete": "Session Complete!",
+  "correct2": "Correct!",
+  "youMatchedAllPairs": "You matched all pairs!",
+  "youBuiltWord": "You built: {word}",
+  "@youBuiltWord": {
+    "placeholders": {
+      "word": { "type": "String" }
+    }
+  },
+  "youGotOutOf": "You got {correct} out of {total}",
+  "@youGotOutOf": {
+    "placeholders": {
+      "correct": { "type": "int" },
+      "total": { "type": "int" }
+    }
+  },
+
+  "add": "Add",
+  "save": "Save",
+  "cancel": "Cancel",
+  "delete": "Delete",
+  "ofWord": "of",
+
+  "myMedicinesTitle": "My Medicines",
+  "todaysMedicines": "Today's Medicines",
+  "tapMedicineWhenTaken": "Tap a medicine when you take it",
+  "addMedicine": "Add Medicine",
+  "editMedicine": "Edit Medicine",
+  "medicineName": "Medicine Name",
+  "dosage": "Dosage",
+  "purpose": "Purpose",
+  "timeLabel": "Time",
+  "medicineHintName": "e.g., Amlodipine",
+  "medicineHintDosage": "e.g., 5mg",
+  "medicineHintPurpose": "e.g., Blood pressure",
+  "pleaseEnterMedicineName": "Please enter the medicine name",
+  "pleaseEnterDosage": "Please enter the dosage",
+  "pleaseEnterPurpose": "Please enter the purpose",
+  "addMedicineButton": "Add Medicine",
+  "saveChanges": "Save Changes",
+  "deleteMedicine": "Delete Medicine?",
+  "deleteMedicineMessage": "This will remove this medicine from your list.",
+  "allDoneForToday": "All done for today! 🎉",
+  "noMedicinesYet": "No medicines yet",
+  "tapAddFirstMedicine": "Tap + Add to create your first one",
+  "morning": "Morning",
+  "afternoon": "Afternoon",
+  "evening": "Evening",
+  "night": "Night",
+
+  "stayHydrated": "Stay Hydrated",
+  "trackWaterIntake": "Track your water intake",
+  "goalGlassesToday": "Goal: {goal} glasses today",
+  "@goalGlassesToday": {
+    "placeholders": {
+      "goal": { "type": "int" }
+    }
+  },
+  "glassesToday": "glasses today",
+  "goalReached": "Goal reached! Well done 🎉",
+  "keepGoingMoreToGo": "Keep going! {n} more to go",
+  "@keepGoingMoreToGo": {
+    "placeholders": {
+      "n": { "type": "int" }
+    }
+  },
+  "quickAdd": "Quick Add",
+  "glass": "glass",
+  "glassesWord": "glasses",
+  "undoLast": "Undo Last",
+  "reset": "Reset",
+  "resetToday": "Reset Today?",
+  "resetTodayMessage": "This will clear today's water log.",
+  "todaysLog": "Today's Log",
+  "noWaterLogged": "No water logged yet",
+  "tapPlusOneToStart": "Tap +1 to start tracking",
+  "dailyGoal": "Daily Goal",
+  "howManyGlasses": "How many glasses per day?",
+  "saveGoal": "Save Goal",
+
+  "myDailyRoutine": "My Daily Routine",
+  "todaysSchedule2": "Today's Schedule",
+  "activitiesPlanned": "{n} activities planned",
+  "@activitiesPlanned": {
+    "placeholders": {
+      "n": { "type": "int" }
+    }
+  },
+  "addActivity": "Add Activity",
+  "editActivity": "Edit Activity",
+  "activityName": "Activity Name",
+  "description": "Description",
+  "activityHintName": "e.g., Morning Walk",
+  "activityHintDesc": "e.g., 20 minutes around the park",
+  "pleaseEnterActivityName": "Please enter a name",
+  "pleaseAddDescription": "Please add a short description",
+  "addActivityButton": "Add Activity",
+  "deleteActivity": "Delete Activity?",
+  "deleteActivityMessage": "Remove this activity from your routine?",
+  "noActivitiesYet": "No activities yet",
+  "tapAddPlanDay": "Tap + Add to plan your day",
+
+  "myAppointments": "My Appointments",
+  "doctorVisits": "Doctor Visits",
+  "upcomingCount": "{n} upcoming",
+  "@upcomingCount": {
+    "placeholders": {
+      "n": { "type": "int" }
+    }
+  },
+  "upcoming": "Upcoming",
+  "past": "Past",
+  "todayWord": "Today",
+  "tomorrowWord": "Tomorrow",
+  "yesterdayWord": "Yesterday",
+  "inDays": "In {n} days",
+  "@inDays": {
+    "placeholders": {
+      "n": { "type": "int" }
+    }
+  },
+  "daysAgo": "{n} days ago",
+  "@daysAgo": {
+    "placeholders": {
+      "n": { "type": "int" }
+    }
+  },
+  "addAppointment": "Add Appointment",
+  "editAppointment": "Edit Appointment",
+  "doctorName": "Doctor Name",
+  "specialty": "Specialty",
+  "location": "Location",
+  "date": "Date",
+  "notesOptional": "Notes (optional)",
+  "doctorHintName": "e.g., Dr. Sharma",
+  "doctorHintSpecialty": "e.g., Cardiologist",
+  "doctorHintLocation": "e.g., Apollo Clinic",
+  "doctorHintNotes": "e.g., Bring reports",
+  "pleaseEnterDoctorName": "Please enter the doctor name",
+  "pleaseEnterSpecialty": "Please enter the specialty",
+  "pleaseEnterLocation": "Please enter the location",
+  "addAppointmentButton": "Add Appointment",
+  "deleteAppointment": "Delete Appointment?",
+  "deleteAppointmentMessage": "Remove this appointment?",
+  "noAppointmentsYet": "No appointments yet",
+  "tapAddScheduleVisit": "Tap + Add to schedule a visit",
+
+  "cherishMoments": "Cherish your favourite moments",
+  "noMemoriesYet": "No memories yet",
+
+  "deepBreathing": "Deep Breathing",
+  "deepBreathingSub": "5 minutes • Calm your mind",
+  "gentleStretching": "Gentle Stretching",
+  "gentleStretchingSub": "10 minutes • Loosen up",
+  "meditation": "Meditation",
+  "meditationSub": "15 minutes • Inner peace",
+  "sleepSounds": "Sleep Sounds",
+  "sleepSoundsSub": "Relaxing music",
+  "moodCheck": "Mood Check",
+  "moodCheckSub": "How are you feeling today?",
+
+  "profile": "Profile",
+  "language": "Language",
+  "notifications": "Notifications",
+  "textSize": "Text Size",
+  "voiceAssistant": "Voice Assistant",
+  "helpSupport": "Help & Support",
+  "aboutCogniCare": "About CogniCare",
+  "comingSoon": "{feature} — Coming soon",
+  "@comingSoon": {
+    "placeholders": {
+      "feature": { "type": "String" }
+    }
+  },
+  "onLabel": "On",
+  "offLabel": "Off",
+  "largeLabel": "Large",
+  "userName": "Ramesh Kumar",
+  "userPhone": "+91 98765 43210",
+  "englishLabel": "English"
+}

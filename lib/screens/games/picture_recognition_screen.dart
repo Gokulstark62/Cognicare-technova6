@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../theme/app_theme.dart';
+import '../../l10n/app_localizations.dart';
 import 'difficulty_store.dart';
 
 class PictureRecognitionScreen extends StatefulWidget {
@@ -87,27 +88,29 @@ class _PictureRecognitionScreenState extends State<PictureRecognitionScreen> {
     });
   }
 
-  void _onGameComplete() {
+  Future<void> _onGameComplete() async {
     if (_winShown) return;
     _winShown = true;
     final change =
-        _store.adjustPicture(correct: _correct, total: _totalRounds);
+        await _store.adjustPicture(correct: _correct, total: _totalRounds);
+    if (!mounted) return;
     _showWinDialog(change);
   }
 
   void _showWinDialog(String change) {
     if (!mounted) return;
+    final l10n = AppLocalizations.of(context);
 
     String? changeMessage;
     Color changeColor = AppTheme.primary;
     IconData? changeIcon;
 
     if (change == 'up') {
-      changeMessage = 'Great job! Level up!';
+      changeMessage = l10n.greatJobLevelUp;
       changeColor = AppTheme.green;
       changeIcon = Icons.arrow_upward;
     } else if (change == 'down') {
-      changeMessage = "Let's try an easier level";
+      changeMessage = l10n.letsTryEasier;
       changeColor = AppTheme.amber;
       changeIcon = Icons.arrow_downward;
     }
@@ -136,7 +139,7 @@ class _PictureRecognitionScreenState extends State<PictureRecognitionScreen> {
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  'Session Complete!',
+                  l10n.sessionComplete,
                   style: GoogleFonts.nunito(
                     fontSize: 26,
                     fontWeight: FontWeight.w800,
@@ -145,7 +148,7 @@ class _PictureRecognitionScreenState extends State<PictureRecognitionScreen> {
                 ),
                 const SizedBox(height: 6),
                 Text(
-                  'You got $_correct out of $_totalRounds',
+                  l10n.youGotOutOf(_correct, _totalRounds),
                   style: GoogleFonts.nunito(
                     fontSize: 15,
                     color: AppTheme.textSecondary,
@@ -181,19 +184,19 @@ class _PictureRecognitionScreenState extends State<PictureRecognitionScreen> {
                 Row(
                   children: [
                     _WinStat(
-                      label: 'Correct',
+                      label: l10n.correct,
                       value: '$_correct',
                       icon: Icons.check_circle_outline,
                       color: AppTheme.green,
                     ),
                     _WinStat(
-                      label: 'Wrong',
+                      label: l10n.wrong,
                       value: '$_wrong',
                       icon: Icons.cancel_outlined,
                       color: AppTheme.pink,
                     ),
                     _WinStat(
-                      label: 'Level',
+                      label: l10n.level,
                       value: _store.pictureLevelName,
                       icon: Icons.star_outline,
                       color: AppTheme.amber,
@@ -209,7 +212,7 @@ class _PictureRecognitionScreenState extends State<PictureRecognitionScreen> {
                       _restartSession();
                     },
                     icon: const Icon(Icons.refresh),
-                    label: const Text('Play Again'),
+                    label: Text(l10n.playAgain),
                   ),
                 ),
                 const SizedBox(height: 10),
@@ -221,7 +224,7 @@ class _PictureRecognitionScreenState extends State<PictureRecognitionScreen> {
                       context.go('/home');
                     },
                     icon: const Icon(Icons.home_outlined),
-                    label: const Text('Back to Home'),
+                    label: Text(l10n.backToHome),
                     style: OutlinedButton.styleFrom(
                       minimumSize: const Size(double.infinity, 58),
                       side: const BorderSide(color: Color(0xFFCFD8DC)),
@@ -250,6 +253,7 @@ class _PictureRecognitionScreenState extends State<PictureRecognitionScreen> {
   }
 
   void _showLevelPicker() {
+    final l10n = AppLocalizations.of(context);
     showModalBottomSheet(
       context: context,
       shape: const RoundedRectangleBorder(
@@ -264,7 +268,7 @@ class _PictureRecognitionScreenState extends State<PictureRecognitionScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Choose Difficulty',
+                  l10n.chooseDifficulty,
                   style: GoogleFonts.nunito(
                     fontSize: 22,
                     fontWeight: FontWeight.w800,
@@ -272,12 +276,12 @@ class _PictureRecognitionScreenState extends State<PictureRecognitionScreen> {
                   ),
                 ),
                 const SizedBox(height: 16),
-                _levelOption(
-                    sheetContext, 0, 'Easy', '2 choices', AppTheme.green),
-                _levelOption(
-                    sheetContext, 1, 'Medium', '4 choices', AppTheme.amber),
-                _levelOption(
-                    sheetContext, 2, 'Hard', '6 choices', AppTheme.pink),
+                _levelOption(sheetContext, 0, l10n.easy,
+                    '2 choices', AppTheme.green),
+                _levelOption(sheetContext, 1, l10n.medium,
+                    '4 choices', AppTheme.amber),
+                _levelOption(sheetContext, 2, l10n.hard,
+                    '6 choices', AppTheme.pink),
               ],
             ),
           ),
@@ -301,8 +305,9 @@ class _PictureRecognitionScreenState extends State<PictureRecognitionScreen> {
         borderRadius: BorderRadius.circular(14),
         child: InkWell(
           borderRadius: BorderRadius.circular(14),
-          onTap: () {
-            _store.setPictureLevel(level);
+          onTap: () async {
+            await _store.setPictureLevel(level);
+            if (!sheetContext.mounted) return;
             Navigator.of(sheetContext).pop();
             _restartSession();
           },
@@ -357,6 +362,8 @@ class _PictureRecognitionScreenState extends State<PictureRecognitionScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+
     if (_round >= _totalRounds) {
       return const Scaffold(
         body: Center(child: CircularProgressIndicator()),
@@ -370,7 +377,7 @@ class _PictureRecognitionScreenState extends State<PictureRecognitionScreen> {
           icon: const Icon(Icons.arrow_back),
           onPressed: () => context.go('/home'),
         ),
-        title: const Text('Picture Recognition'),
+        title: Text(l10n.pictureRecognition),
         actions: [
           Center(
             child: GestureDetector(
@@ -413,7 +420,7 @@ class _PictureRecognitionScreenState extends State<PictureRecognitionScreen> {
                 children: [
                   Expanded(
                     child: Text(
-                      'Round ${_round + 1} / $_totalRounds',
+                      '${l10n.round} ${_round + 1} / $_totalRounds',
                       style: GoogleFonts.nunito(
                         fontSize: 16,
                         fontWeight: FontWeight.w700,
@@ -475,7 +482,7 @@ class _PictureRecognitionScreenState extends State<PictureRecognitionScreen> {
                 child: Column(
                   children: [
                     Text(
-                      'Which one is the',
+                      l10n.identifyObjects,
                       style: GoogleFonts.nunito(
                         fontSize: 18,
                         color: AppTheme.textSecondary,

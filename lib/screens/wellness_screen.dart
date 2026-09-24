@@ -2,40 +2,43 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../theme/app_theme.dart';
+import '../l10n/app_localizations.dart';
 
 class WellnessScreen extends StatelessWidget {
   const WellnessScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+
     final activities = [
       {
-        'title': 'Deep Breathing',
-        'subtitle': '5 minutes • Calm your mind',
+        'title': l10n.deepBreathing,
+        'subtitle': l10n.deepBreathingSub,
         'icon': Icons.air,
         'color': AppTheme.primary,
       },
       {
-        'title': 'Gentle Stretching',
-        'subtitle': '10 minutes • Loosen up',
+        'title': l10n.gentleStretching,
+        'subtitle': l10n.gentleStretchingSub,
         'icon': Icons.self_improvement,
         'color': AppTheme.green,
       },
       {
-        'title': 'Meditation',
-        'subtitle': '15 minutes • Inner peace',
+        'title': l10n.meditation,
+        'subtitle': l10n.meditationSub,
         'icon': Icons.spa_outlined,
         'color': AppTheme.purple,
       },
       {
-        'title': 'Sleep Sounds',
-        'subtitle': 'Relaxing music',
+        'title': l10n.sleepSounds,
+        'subtitle': l10n.sleepSoundsSub,
         'icon': Icons.nightlight_outlined,
         'color': AppTheme.textSecondary,
       },
       {
-        'title': 'Mood Check',
-        'subtitle': 'How are you feeling today?',
+        'title': l10n.moodCheck,
+        'subtitle': l10n.moodCheckSub,
         'icon': Icons.sentiment_satisfied_alt,
         'color': AppTheme.amber,
       },
@@ -48,7 +51,7 @@ class WellnessScreen extends StatelessWidget {
           icon: const Icon(Icons.arrow_back),
           onPressed: () => context.go('/home'),
         ),
-        title: const Text('Wellness & Relax'),
+        title: Text(l10n.wellnessTitle),
       ),
       body: ListView.separated(
         padding: const EdgeInsets.all(20),
@@ -78,7 +81,8 @@ class WellnessScreen extends StatelessWidget {
                     color: color.withOpacity(0.15),
                     borderRadius: BorderRadius.circular(14),
                   ),
-                  child: Icon(a['icon'] as IconData, color: color, size: 28),
+                  child:
+                      Icon(a['icon'] as IconData, color: color, size: 28),
                 ),
                 const SizedBox(width: 16),
                 Expanded(

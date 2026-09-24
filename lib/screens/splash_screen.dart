@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../theme/app_theme.dart';
+import '../l10n/app_localizations.dart';
 import '../widgets/brand_logo.dart';
 import '../widgets/big_button.dart';
 
@@ -10,6 +11,8 @@ class SplashScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -20,7 +23,7 @@ class SplashScreen extends StatelessWidget {
               const BrandLogo(size: 70),
               const SizedBox(height: 16),
               Text(
-                'Better Minds • Happier Families •\nTogether Always',
+                l10n.taglineLong,
                 textAlign: TextAlign.center,
                 style: GoogleFonts.nunito(
                   fontSize: 16,
@@ -44,12 +47,12 @@ class SplashScreen extends StatelessWidget {
               ),
               const Spacer(),
               BigButton(
-                label: 'Get Started',
+                label: l10n.getStarted,
                 onPressed: () => context.go('/login'),
               ),
               const SizedBox(height: 12),
               BigButton(
-                label: 'Continue with Google',
+                label: l10n.continueWithGoogle,
                 icon: Icons.g_mobiledata,
                 outlined: true,
                 onPressed: () {},

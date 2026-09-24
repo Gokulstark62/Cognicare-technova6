@@ -2,44 +2,47 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../theme/app_theme.dart';
+import '../l10n/app_localizations.dart';
 
 class GamesScreen extends StatelessWidget {
   const GamesScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+
     final games = [
       _GameData(
-        title: 'Memory Match',
-        subtitle: 'Find matching pairs',
-        level: 'Easy',
+        title: l10n.memoryMatch,
+        subtitle: l10n.findMatchingPairsSub,
+        level: l10n.easy,
         levelColor: AppTheme.green,
         icon: Icons.grid_view_rounded,
         color: AppTheme.primary,
         route: '/memory-match',
       ),
       _GameData(
-        title: 'Word Builder',
-        subtitle: 'Arrange letters to form words',
-        level: 'Easy',
+        title: l10n.wordBuilder,
+        subtitle: l10n.arrangeLettersSub,
+        level: l10n.easy,
         levelColor: AppTheme.green,
         icon: Icons.abc_rounded,
         color: AppTheme.purple,
         route: '/word-builder',
       ),
       _GameData(
-        title: 'Picture Recognition',
-        subtitle: 'Identify objects and places',
-        level: 'Very Easy',
+        title: l10n.pictureRecognition,
+        subtitle: l10n.identifyObjectsSub,
+        level: l10n.veryEasy,
         levelColor: AppTheme.teal,
         icon: Icons.image_outlined,
         color: AppTheme.amber,
         route: '/picture-recognition',
       ),
       _GameData(
-        title: 'Number Sequence',
-        subtitle: 'Remember the sequence',
-        level: 'Medium',
+        title: l10n.numberSequence,
+        subtitle: l10n.rememberSequenceSub,
+        level: l10n.medium,
         levelColor: AppTheme.orange,
         icon: Icons.looks_one_outlined,
         color: AppTheme.pink,
@@ -72,7 +75,7 @@ class GamesScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Brain Games',
+                          l10n.gamesTitle,
                           style: GoogleFonts.nunito(
                             fontSize: 24,
                             fontWeight: FontWeight.w800,
@@ -80,7 +83,7 @@ class GamesScreen extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          'Exercise your mind. Have fun and keep your brain active!',
+                          l10n.exerciseYourMind,
                           style: GoogleFonts.nunito(
                             fontSize: 14,
                             color: AppTheme.textSecondary,

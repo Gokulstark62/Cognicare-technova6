@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../theme/app_theme.dart';
+import '../../l10n/app_localizations.dart';
 import 'difficulty_store.dart';
 
 class MemoryMatchScreen extends StatefulWidget {
@@ -15,17 +16,13 @@ class MemoryMatchScreen extends StatefulWidget {
 class _MemoryMatchScreenState extends State<MemoryMatchScreen> {
   final _store = DifficultyStore.instance;
 
-  // Deck is generated fresh each game, based on current level
   late List<String> _deck;
   late int _totalPairs;
-
-  // Game state
   late List<bool> _flipped;
   late List<bool> _matched;
   int? _firstIndex;
   bool _busy = false;
 
-  // Score state
   int _moves = 0;
   int _seconds = 0;
   Timer? _timer;
@@ -85,10 +82,7 @@ class _MemoryMatchScreenState extends State<MemoryMatchScreen> {
     if (_flipped[index]) return;
 
     _startTimerIfNeeded();
-
-    setState(() {
-      _flipped[index] = true;
-    });
+    setState(() => _flipped[index] = true);
 
     if (_firstIndex == null) {
       _firstIndex = index;
@@ -97,10 +91,7 @@ class _MemoryMatchScreenState extends State<MemoryMatchScreen> {
 
     final first = _firstIndex!;
     final second = index;
-
-    setState(() {
-      _moves++;
-    });
+    setState(() => _moves++);
 
     if (_deck[first] == _deck[second]) {
       setState(() {
@@ -128,29 +119,28 @@ class _MemoryMatchScreenState extends State<MemoryMatchScreen> {
     }
   }
 
-  void _onGameComplete() {
+  Future<void> _onGameComplete() async {
     if (!mounted) return;
-
-    final acc = _accuracy;
-    final sec = _seconds;
-    final change = _store.adjust(accuracy: acc, seconds: sec);
-
+    final change =
+        await _store.adjust(accuracy: _accuracy, seconds: _seconds);
+    if (!mounted) return;
     _showWinDialog(change);
   }
 
   void _showWinDialog(String change) {
     if (!mounted) return;
+    final l10n = AppLocalizations.of(context);
 
     String? changeMessage;
     Color changeColor = AppTheme.primary;
     IconData? changeIcon;
 
     if (change == 'up') {
-      changeMessage = 'Great job! Level up!';
+      changeMessage = l10n.greatJobLevelUp;
       changeColor = AppTheme.green;
       changeIcon = Icons.arrow_upward;
     } else if (change == 'down') {
-      changeMessage = "Let's try an easier level";
+      changeMessage = l10n.letsTryEasier;
       changeColor = AppTheme.amber;
       changeIcon = Icons.arrow_downward;
     }
@@ -179,7 +169,7 @@ class _MemoryMatchScreenState extends State<MemoryMatchScreen> {
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  'Congratulations!',
+                  l10n.congratulations,
                   style: GoogleFonts.nunito(
                     fontSize: 26,
                     fontWeight: FontWeight.w800,
@@ -188,14 +178,13 @@ class _MemoryMatchScreenState extends State<MemoryMatchScreen> {
                 ),
                 const SizedBox(height: 6),
                 Text(
-                  'You matched all pairs!',
+                  l10n.youMatchedAllPairs,
                   style: GoogleFonts.nunito(
                     fontSize: 15,
                     color: AppTheme.textSecondary,
                   ),
                 ),
                 const SizedBox(height: 20),
-
                 if (changeMessage != null) ...[
                   Container(
                     padding: const EdgeInsets.symmetric(
@@ -222,23 +211,22 @@ class _MemoryMatchScreenState extends State<MemoryMatchScreen> {
                   ),
                   const SizedBox(height: 16),
                 ],
-
                 Row(
                   children: [
                     _WinStat(
-                      label: 'Moves',
+                      label: l10n.moves,
                       value: '$_moves',
                       icon: Icons.touch_app_outlined,
                       color: AppTheme.primary,
                     ),
                     _WinStat(
-                      label: 'Time',
+                      label: l10n.time,
                       value: _formattedTime,
                       icon: Icons.timer_outlined,
                       color: AppTheme.amber,
                     ),
                     _WinStat(
-                      label: 'Accuracy',
+                      label: l10n.accuracy,
                       value: '$_accuracy%',
                       icon: Icons.check_circle_outline,
                       color: AppTheme.green,
@@ -246,16 +234,14 @@ class _MemoryMatchScreenState extends State<MemoryMatchScreen> {
                   ],
                 ),
                 const SizedBox(height: 12),
-
                 Text(
-                  'Next game: ${_store.levelName}',
+                  '${l10n.nextGame}: ${_store.levelName}',
                   style: GoogleFonts.nunito(
                     fontSize: 14,
                     color: AppTheme.textSecondary,
                   ),
                 ),
                 const SizedBox(height: 20),
-
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton.icon(
@@ -264,7 +250,7 @@ class _MemoryMatchScreenState extends State<MemoryMatchScreen> {
                       _resetBoard();
                     },
                     icon: const Icon(Icons.refresh),
-                    label: const Text('Play Again'),
+                    label: Text(l10n.playAgain),
                   ),
                 ),
                 const SizedBox(height: 10),
@@ -276,7 +262,7 @@ class _MemoryMatchScreenState extends State<MemoryMatchScreen> {
                       context.go('/home');
                     },
                     icon: const Icon(Icons.home_outlined),
-                    label: const Text('Back to Home'),
+                    label: Text(l10n.backToHome),
                     style: OutlinedButton.styleFrom(
                       minimumSize: const Size(double.infinity, 58),
                       side: const BorderSide(color: Color(0xFFCFD8DC)),
@@ -295,6 +281,7 @@ class _MemoryMatchScreenState extends State<MemoryMatchScreen> {
   }
 
   void _showLevelPicker() {
+    final l10n = AppLocalizations.of(context);
     showModalBottomSheet(
       context: context,
       shape: const RoundedRectangleBorder(
@@ -309,7 +296,7 @@ class _MemoryMatchScreenState extends State<MemoryMatchScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Choose Difficulty',
+                  l10n.chooseDifficulty,
                   style: GoogleFonts.nunito(
                     fontSize: 22,
                     fontWeight: FontWeight.w800,
@@ -317,12 +304,12 @@ class _MemoryMatchScreenState extends State<MemoryMatchScreen> {
                   ),
                 ),
                 const SizedBox(height: 16),
-                _levelOption(sheetContext, 0, 'Easy', '4 pairs • 8 cards',
-                    AppTheme.green),
-                _levelOption(sheetContext, 1, 'Medium', '6 pairs • 12 cards',
-                    AppTheme.amber),
-                _levelOption(sheetContext, 2, 'Hard', '8 pairs • 16 cards',
-                    AppTheme.pink),
+                _levelOption(sheetContext, 0, l10n.easy,
+                    '4 pairs • 8 cards', AppTheme.green),
+                _levelOption(sheetContext, 1, l10n.medium,
+                    '6 pairs • 12 cards', AppTheme.amber),
+                _levelOption(sheetContext, 2, l10n.hard,
+                    '8 pairs • 16 cards', AppTheme.pink),
               ],
             ),
           ),
@@ -346,8 +333,9 @@ class _MemoryMatchScreenState extends State<MemoryMatchScreen> {
         borderRadius: BorderRadius.circular(14),
         child: InkWell(
           borderRadius: BorderRadius.circular(14),
-          onTap: () {
-            _store.setLevel(level);
+          onTap: () async {
+            await _store.setLevel(level);
+            if (!sheetContext.mounted) return;
             Navigator.of(sheetContext).pop();
             _resetBoard();
           },
@@ -408,6 +396,7 @@ class _MemoryMatchScreenState extends State<MemoryMatchScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Scaffold(
       backgroundColor: AppTheme.background,
       appBar: AppBar(
@@ -415,7 +404,7 @@ class _MemoryMatchScreenState extends State<MemoryMatchScreen> {
           icon: const Icon(Icons.arrow_back),
           onPressed: () => context.go('/home'),
         ),
-        title: const Text('Memory Match'),
+        title: Text(l10n.memoryMatch),
         actions: [
           Center(
             child: GestureDetector(
@@ -475,7 +464,7 @@ class _MemoryMatchScreenState extends State<MemoryMatchScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Find Matching Pairs',
+                          l10n.findMatchingPairs,
                           style: GoogleFonts.nunito(
                             fontSize: 20,
                             fontWeight: FontWeight.w800,
@@ -483,7 +472,7 @@ class _MemoryMatchScreenState extends State<MemoryMatchScreen> {
                           ),
                         ),
                         Text(
-                          'Level: ${_store.levelName} • $_totalPairs pairs',
+                          '${l10n.level}: ${_store.levelName} • $_totalPairs ${l10n.pairs}',
                           style: GoogleFonts.nunito(
                             fontSize: 14,
                             color: AppTheme.textSecondary,
@@ -495,7 +484,6 @@ class _MemoryMatchScreenState extends State<MemoryMatchScreen> {
                 ],
               ),
               const SizedBox(height: 16),
-
               Container(
                 padding: const EdgeInsets.symmetric(
                     vertical: 14, horizontal: 16),
@@ -514,21 +502,21 @@ class _MemoryMatchScreenState extends State<MemoryMatchScreen> {
                   children: [
                     _StatBox(
                       icon: Icons.touch_app_outlined,
-                      label: 'Moves',
+                      label: l10n.moves,
                       value: '$_moves',
                       color: AppTheme.primary,
                     ),
                     _StatDivider(),
                     _StatBox(
                       icon: Icons.timer_outlined,
-                      label: 'Time',
+                      label: l10n.time,
                       value: _formattedTime,
                       color: AppTheme.amber,
                     ),
                     _StatDivider(),
                     _StatBox(
                       icon: Icons.check_circle_outline,
-                      label: 'Pairs',
+                      label: l10n.pairs,
                       value: '$_matchedPairs / $_totalPairs',
                       color: AppTheme.green,
                     ),
@@ -536,7 +524,6 @@ class _MemoryMatchScreenState extends State<MemoryMatchScreen> {
                 ),
               ),
               const SizedBox(height: 20),
-
               Expanded(
                 child: Center(
                   child: ConstrainedBox(

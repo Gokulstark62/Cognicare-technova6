@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../theme/app_theme.dart';
+import '../l10n/app_localizations.dart';
 import '../widgets/brand_logo.dart';
 import '../widgets/big_button.dart';
 
@@ -13,10 +14,12 @@ class SignupScreen extends StatefulWidget {
 }
 
 class _SignupScreenState extends State<SignupScreen> {
-  String _role = 'Family / Caregiver';
+  String _role = 'caregiver'; // internal key, not user-facing
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+
     return Scaffold(
       backgroundColor: AppTheme.background,
       appBar: AppBar(
@@ -38,7 +41,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   const SizedBox(height: 8),
                   Center(
                     child: Text(
-                      'Brighter Days • Stronger Connections',
+                      l10n.tagline,
                       style: GoogleFonts.nunito(
                         fontSize: 14,
                         color: AppTheme.textSecondary,
@@ -47,7 +50,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   ),
                   const SizedBox(height: 28),
                   Text(
-                    'Create Account',
+                    l10n.createAccount,
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.headlineLarge,
                   ),
@@ -56,56 +59,55 @@ class _SignupScreenState extends State<SignupScreen> {
                     children: [
                       Expanded(
                         child: _RoleChip(
-                          label: 'Family / Caregiver',
-                          selected: _role == 'Family / Caregiver',
-                          onTap: () => setState(
-                              () => _role = 'Family / Caregiver'),
+                          label: l10n.familyCaregiver,
+                          selected: _role == 'caregiver',
+                          onTap: () => setState(() => _role = 'caregiver'),
                         ),
                       ),
                       const SizedBox(width: 12),
                       Expanded(
                         child: _RoleChip(
-                          label: 'Doctor',
-                          selected: _role == 'Doctor',
-                          onTap: () => setState(() => _role = 'Doctor'),
+                          label: l10n.doctor,
+                          selected: _role == 'doctor',
+                          onTap: () => setState(() => _role = 'doctor'),
                         ),
                       ),
                     ],
                   ),
                   const SizedBox(height: 20),
-                  const TextField(
+                  TextField(
                     decoration: InputDecoration(
-                      labelText: 'Full Name',
-                      prefixIcon: Icon(Icons.person_outline),
+                      labelText: l10n.fullName,
+                      prefixIcon: const Icon(Icons.person_outline),
                     ),
                   ),
                   const SizedBox(height: 16),
-                  const TextField(
+                  TextField(
                     keyboardType: TextInputType.phone,
                     decoration: InputDecoration(
-                      labelText: 'Mobile Number',
-                      prefixIcon: Icon(Icons.phone_outlined),
+                      labelText: l10n.mobileNumber,
+                      prefixIcon: const Icon(Icons.phone_outlined),
                     ),
                   ),
                   const SizedBox(height: 16),
-                  const TextField(
+                  TextField(
                     keyboardType: TextInputType.emailAddress,
                     decoration: InputDecoration(
-                      labelText: 'Email (Optional)',
-                      prefixIcon: Icon(Icons.email_outlined),
+                      labelText: l10n.emailOptional,
+                      prefixIcon: const Icon(Icons.email_outlined),
                     ),
                   ),
                   const SizedBox(height: 16),
-                  const TextField(
+                  TextField(
                     obscureText: true,
                     decoration: InputDecoration(
-                      labelText: 'Password',
-                      prefixIcon: Icon(Icons.lock_outline),
+                      labelText: l10n.password,
+                      prefixIcon: const Icon(Icons.lock_outline),
                     ),
                   ),
                   const SizedBox(height: 24),
                   BigButton(
-                    label: 'Sign Up',
+                    label: l10n.signUp,
                     onPressed: () => context.go('/language'),
                   ),
                   const SizedBox(height: 20),
@@ -113,12 +115,13 @@ class _SignupScreenState extends State<SignupScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        'Already have an account? ',
+                        l10n.alreadyHaveAccount,
                         style: GoogleFonts.nunito(
                           fontSize: 16,
                           color: AppTheme.textSecondary,
                         ),
                       ),
+                      const SizedBox(width: 4),
                       TextButton(
                         onPressed: () => context.go('/login'),
                         style: TextButton.styleFrom(
@@ -127,7 +130,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                         ),
                         child: Text(
-                          'Login',
+                          l10n.login,
                           style: GoogleFonts.nunito(
                             fontSize: 16,
                             fontWeight: FontWeight.w700,
@@ -178,8 +181,7 @@ class _RoleChip extends StatelessWidget {
             style: GoogleFonts.nunito(
               fontSize: 14,
               fontWeight: FontWeight.w700,
-              color:
-                  selected ? AppTheme.primary : AppTheme.textSecondary,
+              color: selected ? AppTheme.primary : AppTheme.textSecondary,
             ),
           ),
         ),

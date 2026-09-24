@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../theme/app_theme.dart';
+import '../l10n/app_localizations.dart';
 import '../widgets/brand_logo.dart';
 import '../widgets/big_button.dart';
 
@@ -15,6 +16,7 @@ class LanguageScreen extends StatefulWidget {
 class _LanguageScreenState extends State<LanguageScreen> {
   String _selected = 'English';
 
+  // Language list — native names, not translated
   static const _languages = [
     {'name': 'English', 'native': 'English', 'flag': '🇬🇧'},
     {'name': 'Tamil', 'native': 'தமிழ்', 'flag': '🇮🇳'},
@@ -29,6 +31,8 @@ class _LanguageScreenState extends State<LanguageScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+
     return Scaffold(
       backgroundColor: AppTheme.background,
       body: SafeArea(
@@ -39,7 +43,7 @@ class _LanguageScreenState extends State<LanguageScreen> {
               const BrandLogo(size: 46),
               const SizedBox(height: 8),
               Text(
-                'Brighter Days • Stronger Connections',
+                l10n.tagline,
                 style: GoogleFonts.nunito(
                   fontSize: 14,
                   color: AppTheme.textSecondary,
@@ -47,12 +51,12 @@ class _LanguageScreenState extends State<LanguageScreen> {
               ),
               const SizedBox(height: 24),
               Text(
-                'Choose Your Language',
+                l10n.chooseYourLanguage,
                 style: Theme.of(context).textTheme.headlineLarge,
               ),
               const SizedBox(height: 6),
               Text(
-                'Select your preferred language to continue',
+                l10n.selectPreferredLanguage,
                 style: GoogleFonts.nunito(
                   fontSize: 15,
                   color: AppTheme.textSecondary,
@@ -73,8 +77,7 @@ class _LanguageScreenState extends State<LanguageScreen> {
                     final lang = _languages[i];
                     final isSelected = _selected == lang['name'];
                     return GestureDetector(
-                      onTap: () =>
-                          setState(() => _selected = lang['name']!),
+                      onTap: () => setState(() => _selected = lang['name']!),
                       child: Container(
                         decoration: BoxDecoration(
                           color: isSelected
@@ -120,7 +123,7 @@ class _LanguageScreenState extends State<LanguageScreen> {
               ),
               const SizedBox(height: 12),
               BigButton(
-                label: 'Continue',
+                label: l10n.continueText,
                 onPressed: () => context.go('/home'),
               ),
             ],

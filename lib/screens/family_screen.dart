@@ -1,55 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../theme/app_theme.dart';
+import '../l10n/app_localizations.dart';
 
 class FamilyScreen extends StatelessWidget {
   const FamilyScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+
     final family = [
-      _FamilyMember(
-        name: 'Arjun',
-        relation: 'Son',
-        initials: 'A',
-        color: AppTheme.primary,
-        online: true,
-      ),
-      _FamilyMember(
-        name: 'Priya',
-        relation: 'Daughter',
-        initials: 'P',
-        color: AppTheme.pink,
-        online: true,
-      ),
-      _FamilyMember(
-        name: 'Ravi',
-        relation: 'Grandson',
-        initials: 'R',
-        color: AppTheme.green,
-        online: false,
-      ),
-      _FamilyMember(
-        name: 'Lakshmi',
-        relation: 'Granddaughter',
-        initials: 'L',
-        color: AppTheme.purple,
-        online: true,
-      ),
-      _FamilyMember(
-        name: 'Kumar',
-        relation: 'Nephew',
-        initials: 'K',
-        color: AppTheme.amber,
-        online: false,
-      ),
-      _FamilyMember(
-        name: 'Meena',
-        relation: 'Niece',
-        initials: 'M',
-        color: AppTheme.teal,
-        online: false,
-      ),
+      _FamilyMember(name: 'Arjun', relation: 'Son', initials: 'A',
+          color: AppTheme.primary, online: true),
+      _FamilyMember(name: 'Priya', relation: 'Daughter', initials: 'P',
+          color: AppTheme.pink, online: true),
+      _FamilyMember(name: 'Ravi', relation: 'Grandson', initials: 'R',
+          color: AppTheme.green, online: false),
+      _FamilyMember(name: 'Lakshmi', relation: 'Granddaughter', initials: 'L',
+          color: AppTheme.purple, online: true),
+      _FamilyMember(name: 'Kumar', relation: 'Nephew', initials: 'K',
+          color: AppTheme.amber, online: false),
+      _FamilyMember(name: 'Meena', relation: 'Niece', initials: 'M',
+          color: AppTheme.teal, online: false),
     ];
 
     return Scaffold(
@@ -60,7 +33,6 @@ class FamilyScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Header
               Row(
                 children: [
                   Container(
@@ -78,7 +50,7 @@ class FamilyScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'My Family',
+                          l10n.familyTitle,
                           style: GoogleFonts.nunito(
                             fontSize: 24,
                             fontWeight: FontWeight.w800,
@@ -86,7 +58,7 @@ class FamilyScreen extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          'Stay connected with your loved ones',
+                          l10n.stayConnected,
                           style: GoogleFonts.nunito(
                             fontSize: 14,
                             color: AppTheme.textSecondary,
@@ -98,20 +70,23 @@ class FamilyScreen extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 24),
-
-              // Grid of family members
               GridView.builder(
                 itemCount: family.length,
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                gridDelegate:
+                    const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
                   crossAxisSpacing: 14,
                   mainAxisSpacing: 14,
                   childAspectRatio: 0.85,
                 ),
                 itemBuilder: (context, i) {
-                  return _FamilyCard(member: family[i]);
+                  return _FamilyCard(
+                    member: family[i],
+                    onlineLabel: l10n.online,
+                    lastSeenLabel: l10n.lastSeen,
+                  );
                 },
               ),
             ],
@@ -140,7 +115,14 @@ class _FamilyMember {
 
 class _FamilyCard extends StatelessWidget {
   final _FamilyMember member;
-  const _FamilyCard({required this.member});
+  final String onlineLabel;
+  final String lastSeenLabel;
+
+  const _FamilyCard({
+    required this.member,
+    required this.onlineLabel,
+    required this.lastSeenLabel,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -149,9 +131,7 @@ class _FamilyCard extends StatelessWidget {
       borderRadius: BorderRadius.circular(18),
       child: InkWell(
         borderRadius: BorderRadius.circular(18),
-        onTap: () {
-          // TODO: Phase 4 — open chat / call
-        },
+        onTap: () {},
         child: Container(
           padding: const EdgeInsets.all(14),
           decoration: BoxDecoration(
@@ -167,7 +147,6 @@ class _FamilyCard extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // Avatar with online dot
               Stack(
                 children: [
                   Container(
@@ -206,8 +185,6 @@ class _FamilyCard extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 12),
-
-              // Name
               Text(
                 member.name,
                 style: GoogleFonts.nunito(
@@ -217,8 +194,6 @@ class _FamilyCard extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 2),
-
-              // Relation
               Text(
                 member.relation,
                 style: GoogleFonts.nunito(
@@ -227,10 +202,8 @@ class _FamilyCard extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 10),
-
-              // Status
               Text(
-                member.online ? 'Online' : 'Last seen recently',
+                member.online ? onlineLabel : lastSeenLabel,
                 style: GoogleFonts.nunito(
                   fontSize: 12,
                   fontWeight: FontWeight.w600,

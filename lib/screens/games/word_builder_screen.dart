@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../theme/app_theme.dart';
+import '../../l10n/app_localizations.dart';
 import 'difficulty_store.dart';
 
 class WordBuilderScreen extends StatefulWidget {
@@ -97,7 +98,6 @@ class _WordBuilderScreenState extends State<WordBuilderScreen> {
 
     setState(() {
       _answer[slot] = null;
-      // Free the first used pool tile matching this letter
       for (int i = 0; i < _scrambled.length; i++) {
         if (_used[i] && _scrambled[i] == letter) {
           _used[i] = false;
@@ -137,32 +137,34 @@ class _WordBuilderScreenState extends State<WordBuilderScreen> {
     }
   }
 
-  void _onCorrect() {
+  Future<void> _onCorrect() async {
     if (!mounted) return;
     if (_winShown) return;
     _winShown = true;
 
-    final change = _store.adjustWordBuilder(
+    final change = await _store.adjustWordBuilder(
       attempts: _attempts,
       seconds: _seconds,
     );
 
+    if (!mounted) return;
     _showWinDialog(change);
   }
 
   void _showWinDialog(String change) {
     if (!mounted) return;
+    final l10n = AppLocalizations.of(context);
 
     String? changeMessage;
     Color changeColor = AppTheme.primary;
     IconData? changeIcon;
 
     if (change == 'up') {
-      changeMessage = 'Great job! Level up!';
+      changeMessage = l10n.greatJobLevelUp;
       changeColor = AppTheme.green;
       changeIcon = Icons.arrow_upward;
     } else if (change == 'down') {
-      changeMessage = "Let's try an easier level";
+      changeMessage = l10n.letsTryEasier;
       changeColor = AppTheme.amber;
       changeIcon = Icons.arrow_downward;
     }
@@ -191,7 +193,7 @@ class _WordBuilderScreenState extends State<WordBuilderScreen> {
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  'Correct!',
+                  l10n.correct2,
                   style: GoogleFonts.nunito(
                     fontSize: 26,
                     fontWeight: FontWeight.w800,
@@ -200,14 +202,13 @@ class _WordBuilderScreenState extends State<WordBuilderScreen> {
                 ),
                 const SizedBox(height: 6),
                 Text(
-                  'You built: $_targetWord',
+                  l10n.youBuiltWord(_targetWord),
                   style: GoogleFonts.nunito(
                     fontSize: 15,
                     color: AppTheme.textSecondary,
                   ),
                 ),
                 const SizedBox(height: 20),
-
                 if (changeMessage != null) ...[
                   Container(
                     padding: const EdgeInsets.symmetric(
@@ -234,23 +235,22 @@ class _WordBuilderScreenState extends State<WordBuilderScreen> {
                   ),
                   const SizedBox(height: 16),
                 ],
-
                 Row(
                   children: [
                     _WinStat(
-                      label: 'Attempts',
+                      label: l10n.attempts,
                       value: '$_attempts',
                       icon: Icons.refresh,
                       color: AppTheme.primary,
                     ),
                     _WinStat(
-                      label: 'Time',
+                      label: l10n.time,
                       value: _formattedTime,
                       icon: Icons.timer_outlined,
                       color: AppTheme.amber,
                     ),
                     _WinStat(
-                      label: 'Level',
+                      label: l10n.level,
                       value: _store.wordBuilderLevelName,
                       icon: Icons.star_outline,
                       color: AppTheme.green,
@@ -258,7 +258,6 @@ class _WordBuilderScreenState extends State<WordBuilderScreen> {
                   ],
                 ),
                 const SizedBox(height: 20),
-
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton.icon(
@@ -267,7 +266,7 @@ class _WordBuilderScreenState extends State<WordBuilderScreen> {
                       _newRound();
                     },
                     icon: const Icon(Icons.arrow_forward),
-                    label: const Text('Next Word'),
+                    label: Text(l10n.nextWord),
                   ),
                 ),
                 const SizedBox(height: 10),
@@ -279,7 +278,7 @@ class _WordBuilderScreenState extends State<WordBuilderScreen> {
                       context.go('/home');
                     },
                     icon: const Icon(Icons.home_outlined),
-                    label: const Text('Back to Home'),
+                    label: Text(l10n.backToHome),
                     style: OutlinedButton.styleFrom(
                       minimumSize: const Size(double.infinity, 58),
                       side: const BorderSide(color: Color(0xFFCFD8DC)),
@@ -298,6 +297,7 @@ class _WordBuilderScreenState extends State<WordBuilderScreen> {
   }
 
   void _showLevelPicker() {
+    final l10n = AppLocalizations.of(context);
     showModalBottomSheet(
       context: context,
       shape: const RoundedRectangleBorder(
@@ -312,7 +312,7 @@ class _WordBuilderScreenState extends State<WordBuilderScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Choose Difficulty',
+                  l10n.chooseDifficulty,
                   style: GoogleFonts.nunito(
                     fontSize: 22,
                     fontWeight: FontWeight.w800,
@@ -320,13 +320,12 @@ class _WordBuilderScreenState extends State<WordBuilderScreen> {
                   ),
                 ),
                 const SizedBox(height: 16),
-                _levelOption(sheetContext, 0, 'Easy', 'Short words (3 letters)',
-                    AppTheme.green),
-                _levelOption(
-                    sheetContext, 1, 'Medium', 'Medium words (5 letters)',
-                    AppTheme.amber),
-                _levelOption(sheetContext, 2, 'Hard', 'Long words (7+ letters)',
-                    AppTheme.pink),
+                _levelOption(sheetContext, 0, l10n.easy,
+                    'Short words (3 letters)', AppTheme.green),
+                _levelOption(sheetContext, 1, l10n.medium,
+                    'Medium words (5 letters)', AppTheme.amber),
+                _levelOption(sheetContext, 2, l10n.hard,
+                    'Long words (7+ letters)', AppTheme.pink),
               ],
             ),
           ),
@@ -350,8 +349,9 @@ class _WordBuilderScreenState extends State<WordBuilderScreen> {
         borderRadius: BorderRadius.circular(14),
         child: InkWell(
           borderRadius: BorderRadius.circular(14),
-          onTap: () {
-            _store.setWordBuilderLevel(level);
+          onTap: () async {
+            await _store.setWordBuilderLevel(level);
+            if (!sheetContext.mounted) return;
             Navigator.of(sheetContext).pop();
             _newRound();
           },
@@ -412,6 +412,8 @@ class _WordBuilderScreenState extends State<WordBuilderScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+
     return Scaffold(
       backgroundColor: AppTheme.background,
       appBar: AppBar(
@@ -419,7 +421,7 @@ class _WordBuilderScreenState extends State<WordBuilderScreen> {
           icon: const Icon(Icons.arrow_back),
           onPressed: () => context.go('/home'),
         ),
-        title: const Text('Word Builder'),
+        title: Text(l10n.wordBuilder),
         actions: [
           Center(
             child: GestureDetector(
@@ -479,7 +481,7 @@ class _WordBuilderScreenState extends State<WordBuilderScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Build the Word',
+                          l10n.buildTheWord,
                           style: GoogleFonts.nunito(
                             fontSize: 20,
                             fontWeight: FontWeight.w800,
@@ -487,7 +489,7 @@ class _WordBuilderScreenState extends State<WordBuilderScreen> {
                           ),
                         ),
                         Text(
-                          'Tap letters to arrange them',
+                          l10n.arrangeLetters,
                           style: GoogleFonts.nunito(
                             fontSize: 14,
                             color: AppTheme.textSecondary,
@@ -518,21 +520,21 @@ class _WordBuilderScreenState extends State<WordBuilderScreen> {
                   children: [
                     _StatBox(
                       icon: Icons.refresh,
-                      label: 'Attempts',
+                      label: l10n.attempts,
                       value: '$_attempts',
                       color: AppTheme.primary,
                     ),
                     _StatDivider(),
                     _StatBox(
                       icon: Icons.timer_outlined,
-                      label: 'Time',
+                      label: l10n.time,
                       value: _formattedTime,
                       color: AppTheme.amber,
                     ),
                     _StatDivider(),
                     _StatBox(
                       icon: Icons.star_outline,
-                      label: 'Level',
+                      label: l10n.level,
                       value: _store.wordBuilderLevelName,
                       color: AppTheme.green,
                     ),
@@ -632,7 +634,7 @@ class _WordBuilderScreenState extends State<WordBuilderScreen> {
                 child: OutlinedButton.icon(
                   onPressed: _clearAnswer,
                   icon: const Icon(Icons.clear),
-                  label: const Text('Clear'),
+                  label: Text(l10n.clear),
                   style: OutlinedButton.styleFrom(
                     minimumSize: const Size(double.infinity, 54),
                     side: const BorderSide(color: Color(0xFFCFD8DC)),
